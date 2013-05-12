@@ -1,0 +1,35 @@
+#!/usr/local/bin/perl -i
+
+=head1 inplace_replace
+ 
+Replace a string in a file and save the changes back into the same file
+
+=cut
+
+=head2 USAGE
+
+1) Simple replace
+  inplace_replace '<aesop:type>text</aesop:type>' '<aesop:type name="Web Page">text</aesop:type>' myfile.txt
+2) Replace all files
+
+ find . -type f | xargs -n 1 inplace_replace '<aesop:type>text</aesop:type>' '<aesop:type name="Web Page">text</aesop:type>'
+
+3) Replace only certain files in all subdirectories
+    
+ find . -type f -name '*.php' | xargs -n 1 inplace_replace '<aesop:type>text</aesop:type>' '<aesop:type name="Web Page">text</aesop:type>'
+
+3) Replace only file in my current directory
+    
+ find . -type f -name '*.php' -maxdepth 1 | xargs -n 1 inplace_replace '<aesop:type>text</aesop:type>' '<aesop:type name="Web Page">text</aesop:type>'
+
+=cut
+ 
+$orig = shift;
+$new  = shift;
+
+unless (defined($orig) && 
+        defined($new))
+{
+  die "Usage: inplace_replace orig new file";
+}
+while (<>) {s/$orig/$new/gs; print;};
